@@ -1,15 +1,17 @@
 package org.example.booksfrog.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.example.booksfrog.dto.BookDTO;
 import org.example.booksfrog.mapper.BookMapper;
 import org.example.booksfrog.model.Book;
 import org.example.booksfrog.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -51,7 +53,12 @@ public class BookService {
         return bookRepository.findById(id).map(Book::getContent);
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    // public List<Book> getAllBooks() {
+    //     return bookRepository.findAll();
+    // }
+
+    public Page<BookDTO> getAllBooks(int page, int size) {
+        Page<Book> bookPage = bookRepository.findAll(PageRequest.of(page, size));
+        return bookPage.map(BookMapper::toDTO);
     }
 }

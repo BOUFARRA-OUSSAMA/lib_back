@@ -17,3 +17,4 @@ public class BookDTO {
     private String coverImage;
     private Long categoryId;
 }
+ 
